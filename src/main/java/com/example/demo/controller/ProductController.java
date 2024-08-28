@@ -5,6 +5,9 @@ import com.example.demo.dto.ProductListDTO;
 import com.example.demo.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,7 +49,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProduct(id));
     }
     @GetMapping
-    public ResponseEntity<List<ProductListDTO>> getAllProducts(){
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<Page<ProductListDTO>> getAllProducts(@PageableDefault(size=10) Pageable pageable){
+        return ResponseEntity.ok(productService.getAllProducts(pageable));
     }
 }

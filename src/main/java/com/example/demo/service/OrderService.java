@@ -39,6 +39,9 @@ public class OrderService {
     public OrderDTO createOrder(Long userId, String address, String phoneNumber){
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new ResourceNotFoundException("User not found"));
+        if(!user.isEmailConfirmation()){
+            throw new IllegalStateException("Email not confirmed. Please confirm email before placing order");
+        }
         CartDTO cartDTO = cartService.getCart(userId);
         Cart cart = cartMapper.toEntity(cartDTO);
 

@@ -8,6 +8,8 @@ import com.example.demo.model.Product;
 import com.example.demo.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -67,8 +69,8 @@ public class ProductService {
         return productMapper.toDTO(product);
     }
 
-    public List<ProductListDTO> getAllProducts(){
-        return productRepository.findAllWithoutComments();
+    public Page<ProductListDTO> getAllProducts(Pageable pageable) {
+        return productRepository.findAllWithoutComments(pageable);
     }
     private String saveImage(MultipartFile image) throws  IOException{
         String fileName = UUID.randomUUID().toString()+"_"+image.getOriginalFilename();
