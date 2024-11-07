@@ -16,10 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -64,4 +61,29 @@ public class AuthController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    //update
+    @GetMapping("/user/role")
+    public ResponseEntity<String> getUserRole() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User user = userService.getUserByEmail(email);
+
+        if (user != null) {
+            String role = String.valueOf(user.getRole());
+            return ResponseEntity.ok(role);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    //update
+    @GetMapping("/user/{id}")
+    public ResponseEntity<String> getUserEmailById(@PathVariable Long id) {
+        User user = userService.getUserById(id); // Ensure this method exists in your UserService
+        if (user != null) {
+            return ResponseEntity.ok(user.getEmail());
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
+

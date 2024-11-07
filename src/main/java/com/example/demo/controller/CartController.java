@@ -39,4 +39,14 @@ public class CartController {
         cartService.clearCart(userId);
         return ResponseEntity.noContent().build();
     }
+
+    //update
+    @DeleteMapping("/{productId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> removeCartItem(@AuthenticationPrincipal UserDetails userDetails,
+                                               @PathVariable Long productId) {
+        Long userId = ((User) userDetails).getId();
+        cartService.removeCartItem(userId, productId);
+        return ResponseEntity.noContent().build();
+    }
 }
